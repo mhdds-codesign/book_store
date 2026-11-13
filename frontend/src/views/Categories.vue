@@ -50,53 +50,45 @@
         <p>در حال بارگذاری دسته‌بندی‌ها...</p>
       </div>
 
-      <div v-else class="category-card-layout">
-        <!-- Table on Right (in RTL) -->
-        <div class="table-responsive" style="flex:1;">
-          <table class="orbit-table">
-            <thead>
-              <tr>
-                <th style="width:45px;">#</th>
-                <th>نام دسته‌بندی</th>
-                <th>توضیحات</th>
-                <th style="text-align:center;">محصولات</th>
-                <th style="text-align:center;">عملیات</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr v-for="c in categories" :key="c.id">
-                <td style="font-weight:700; color:#64748b;">#{{ formatNumber(c.id) }}</td>
-                <td style="font-weight:700; color:#0c3b4a; font-size:1rem;">{{ c.name }}</td>
-                <td style="color:#475569; max-width:320px;">{{ c.description || '—' }}</td>
-                <td style="text-align:center; font-weight:700;">
-                  <span class="status-pill status-completed" style="padding:0.2rem 0.8rem;">
-                    {{ formatNumber(c.product_count) }}
-                  </span>
-                </td>
-                <td style="text-align:center;">
-                  <div class="action-buttons-group" style="justify-content:center;">
-                    <router-link :to="'/categories/' + c.id + '/edit'" class="btn-action-edit" title="ویرایش">
-                      <i class="fas fa-pen"></i>
-                    </router-link>
-                    <button class="btn-action-delete" @click="doDelete(c)" title="حذف">
-                      <i class="fas fa-trash-can"></i>
-                    </button>
-                  </div>
-                </td>
-              </tr>
-              <tr v-if="!categories.length">
-                <td colspan="5" style="text-align:center; padding:3rem; color:#94a3b8;">
-                  دسته‌بندی ثبت نشده است.
-                </td>
-              </tr>
-            </tbody>
-          </table>
-        </div>
-
-        <!-- 3D Book Artwork on Left (as in screenshot) -->
-        <div class="category-card-left-img">
-          <img src="/assets/books_category.png" alt="دسته‌بندی کتاب‌ها" />
-        </div>
+      <div v-else class="table-responsive">
+        <table class="orbit-table">
+          <thead>
+            <tr>
+              <th style="width:45px;">#</th>
+              <th>نام دسته‌بندی</th>
+              <th>توضیحات</th>
+              <th style="text-align:center;">محصولات</th>
+              <th style="text-align:center;">عملیات</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr v-for="c in categories" :key="c.id">
+              <td style="font-weight:700; color:#64748b;">#{{ formatNumber(c.id) }}</td>
+              <td style="font-weight:700; color:#0c3b4a; font-size:1rem;">{{ c.name }}</td>
+              <td style="color:#475569; max-width:320px;">{{ c.description || '—' }}</td>
+              <td style="text-align:center; font-weight:700;">
+                <span class="status-pill status-completed" style="padding:0.2rem 0.8rem;">
+                  {{ formatNumber(c.product_count) }}
+                </span>
+              </td>
+              <td style="text-align:center;">
+                <div class="action-buttons-group" style="justify-content:center;">
+                  <router-link :to="'/categories/' + c.id + '/edit'" class="btn-action-edit" title="ویرایش">
+                    <i class="fas fa-pen"></i>
+                  </router-link>
+                  <button class="btn-action-delete" @click="doDelete(c)" title="حذف">
+                    <i class="fas fa-trash-can"></i>
+                  </button>
+                </div>
+              </td>
+            </tr>
+            <tr v-if="!categories.length">
+              <td colspan="5" style="text-align:center; padding:3rem; color:#94a3b8;">
+                دسته‌بندی ثبت نشده است.
+              </td>
+            </tr>
+          </tbody>
+        </table>
       </div>
 
       <!-- Pagination -->

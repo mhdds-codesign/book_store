@@ -125,7 +125,6 @@
           <thead>
             <tr>
               <th style="width:45px;">#</th>
-              <th style="text-align:center; width:60px;">تصویر</th>
               <th>نام محصول</th>
               <th>دسته‌بندی</th>
               <th>قیمت</th>
@@ -136,9 +135,6 @@
           <tbody>
             <tr v-for="p in products" :key="p.id">
               <td style="font-weight:700; color:#64748b;">#{{ formatNumber(p.id) }}</td>
-              <td style="text-align:center;">
-                <img src="/assets/book_thumb.png" alt="کتاب" class="product-book-thumb" />
-              </td>
               <td>
                 <div style="font-weight:700; color:#0c3b4a; font-size:1rem;">{{ p.name }}</div>
                 <div style="font-size:0.82rem; color:#64748b; max-width:320px;" v-if="p.description">
@@ -176,7 +172,7 @@
               </td>
             </tr>
             <tr v-if="!products.length">
-              <td colspan="7" style="text-align:center; padding:3rem; color:#94a3b8;">
+              <td colspan="6" style="text-align:center; padding:3rem; color:#94a3b8;">
                 محصولی با این مشخصات یافت نشد.
               </td>
             </tr>

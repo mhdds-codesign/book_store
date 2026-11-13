@@ -62,8 +62,7 @@
           <thead>
             <tr>
               <th style="width:45px;">#</th>
-              <th>نام</th>
-              <th>ویرایش / حذف</th>
+              <th>نام مشتری</th>
               <th>تلفن</th>
               <th>ایمیل</th>
               <th style="text-align:center;">سفارش‌ها</th>
@@ -74,16 +73,6 @@
             <tr v-for="c in customers" :key="c.id">
               <td style="font-weight:700; color:#64748b;">#{{ formatNumber(c.id) }}</td>
               <td style="font-weight:700; font-size:1rem; color:#0c3b4a;">{{ c.name }}</td>
-              <td>
-                <div class="action-buttons-group">
-                  <router-link :to="'/customers/' + c.id + '/edit'" class="btn-action-edit" title="ویرایش">
-                    <i class="fas fa-pen"></i>
-                  </router-link>
-                  <button class="btn-action-delete" @click="doDelete(c)" title="حذف">
-                    <i class="fas fa-trash-can"></i>
-                  </button>
-                </div>
-              </td>
               <td style="direction:ltr; text-align:right; color:#475569;">{{ c.phone || '—' }}</td>
               <td style="color:#0284c7; direction:ltr; text-align:right;">{{ c.email }}</td>
               <td style="text-align:center; font-weight:700;">
@@ -92,13 +81,18 @@
                 </span>
               </td>
               <td style="text-align:center;">
-                <router-link :to="'/orders?customer_id=' + c.id" class="btn-action-view" title="مشاهده سفارش‌های این مشتری">
-                  <i class="fas fa-eye"></i>
-                </router-link>
+                <div class="action-buttons-group" style="justify-content:center;">
+                  <router-link :to="'/customers/' + c.id + '/edit'" class="btn-action-edit" title="ویرایش">
+                    <i class="fas fa-pen"></i>
+                  </router-link>
+                  <button class="btn-action-delete" @click="doDelete(c)" title="حذف">
+                    <i class="fas fa-trash-can"></i>
+                  </button>
+                </div>
               </td>
             </tr>
             <tr v-if="!customers.length">
-              <td colspan="7" style="text-align:center; padding:3rem; color:#94a3b8;">
+              <td colspan="6" style="text-align:center; padding:3rem; color:#94a3b8;">
                 مشتری یافت نشد.
               </td>
             </tr>

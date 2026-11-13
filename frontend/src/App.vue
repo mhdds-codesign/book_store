@@ -96,11 +96,6 @@
           </li>
         </ul>
       </div>
-
-      <!-- Bottom Book Stack Artwork from Design -->
-      <div class="sidebar-footer">
-        <img src="/assets/books_sidebar.png" alt="OrbitBook 3D Books" class="sidebar-books-img" />
-      </div>
     </aside>
 
     <!-- Main Content Area -->
