@@ -1,4 +1,5 @@
 import os
+import sys
 import hashlib
 from fastapi import FastAPI, Depends, HTTPException
 from fastapi.openapi.docs import get_swagger_ui_html
@@ -9,6 +10,11 @@ from starlette.middleware.sessions import SessionMiddleware
 from fastapi.middleware.cors import CORSMiddleware
 from starlette import status
 from sqlalchemy.orm import Session
+
+BASE_BACKEND_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+if BASE_BACKEND_DIR not in sys.path:
+    sys.path.insert(0, BASE_BACKEND_DIR)
+
 from app.database import engine, Base, get_db
 from app.models import Admin
 from app.api import auth_api, dashboard_api, products_api, categories_api, customers_api, orders_api
@@ -16,6 +22,16 @@ from app.api import auth_api, dashboard_api, products_api, categories_api, custo
 Base.metadata.create_all(bind=engine)
 
 app = FastAPI(title="Shop Manager — Full-Stack Edition", docs_url=None, redoc_url=None)
+
+
+@app.on_event("startup")
+def on_startup():
+    Base.metadata.create_all(bind=engine)
+    try:
+        from seed import seed_database
+        seed_database()
+    except Exception as e:
+        print(f"Startup auto-seed check: {e}")
 
 app.add_middleware(SessionMiddleware, secret_key="change-this-secret-key-in-production")
 

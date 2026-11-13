@@ -3,8 +3,8 @@ from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker, declarative_base
 
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-DB_PATH = os.path.join(BASE_DIR, "shop.db")
-SQLALCHEMY_DATABASE_URL = f"sqlite:///{DB_PATH}"
+DB_PATH = os.path.abspath(os.path.join(BASE_DIR, "shop.db"))
+SQLALCHEMY_DATABASE_URL = f"sqlite:///{DB_PATH.replace(os.sep, '/')}"
 
 engine = create_engine(
     SQLALCHEMY_DATABASE_URL, connect_args={"check_same_thread": False}
@@ -19,4 +19,3 @@ def get_db():
         yield db
     finally:
         db.close()
-
