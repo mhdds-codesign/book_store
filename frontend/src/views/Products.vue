@@ -26,7 +26,7 @@
 
       <div class="filter-inputs-row">
         <!-- Search Keyword -->
-        <div class="filter-input-wrap" style="flex: 2; min-width: 220px;">
+        <div class="filter-input-wrap filter-input-search">
           <input
             v-model="filters.q"
             @keyup.enter="applyFilters"
@@ -61,13 +61,15 @@
         </div>
 
         <!-- Search & Reset Buttons -->
-        <button class="btn-search-trigger" @click="applyFilters">
-          <i class="fas fa-search"></i>
-          <span>جستجو</span>
-        </button>
-        <button class="btn-orbit-secondary" @click="resetFilters" style="padding:0.65rem 1rem;">
-          <i class="fas fa-rotate-right"></i>
-        </button>
+        <div class="filter-buttons-group">
+          <button class="btn-search-trigger" @click="applyFilters">
+            <i class="fas fa-search"></i>
+            <span>جستجو</span>
+          </button>
+          <button class="btn-orbit-secondary btn-reset-filters" @click="resetFilters" title="پاکسازی فیلترها">
+            <i class="fas fa-rotate-right"></i>
+          </button>
+        </div>
       </div>
 
       <!-- Sort Pills Bar -->

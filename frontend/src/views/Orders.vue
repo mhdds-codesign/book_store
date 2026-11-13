@@ -16,8 +16,8 @@
     </div>
 
     <!-- Search & Sort Controls Bar -->
-    <div class="search-filter-card" style="padding: 1rem 1.25rem;">
-      <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:1rem;">
+    <div class="search-filter-card">
+      <div class="orders-filter-row">
         <!-- Sort Pills -->
         <div class="sort-pills-bar" style="margin-bottom:0;">
           <span class="sort-label">مرتب‌سازی بر اساس:</span>
@@ -45,12 +45,11 @@
         </div>
 
         <!-- Search Input -->
-        <div style="display:flex; align-items:center; gap:0.5rem; flex:1; max-width:340px; min-width:240px;">
+        <div class="orders-search-box">
           <input
             v-model="searchQuery"
             @keyup.enter="load"
             placeholder="جستجو در سفارش‌ها..."
-            style="width:100%; padding:0.6rem 1rem; border-radius:12px; border:1px solid #cbd5e1; outline:none; font-family:inherit; font-size:0.9rem;"
           />
           <button class="btn-search-trigger" @click="load" title="جستجو">
             <i class="fas fa-search"></i>

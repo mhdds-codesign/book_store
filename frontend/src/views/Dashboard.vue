@@ -159,12 +159,12 @@
 
         <!-- Left Column: Sales Overview Chart -->
         <div class="orbit-card">
-          <div class="orbit-card-header">
+          <div class="orbit-card-header chart-header-row">
             <div class="orbit-card-title">
               <i class="fas fa-chart-line"></i>
               <span>نمای کلی فروش</span>
             </div>
-            <div style="display:flex; align-items:center; gap:0.6rem;">
+            <div class="chart-header-actions">
               <span class="status-pill status-completed" style="font-size:0.82rem; padding:0.25rem 0.75rem;">
                 {{ formatToman(data.total_revenue) }}
               </span>
@@ -177,7 +177,7 @@
           </div>
           <div class="orbit-card-body" style="padding:1rem;">
             <!-- Beautiful Glowing Vector SVG Line Chart -->
-            <div style="width:100%; height:220px; position:relative;">
+            <div style="width:100%; height:220px; position:relative; overflow:hidden;">
               <svg viewBox="0 0 500 200" style="width:100%; height:100%; overflow:visible;">
                 <defs>
                   <linearGradient id="chartGlowGradient" x1="0%" y1="0%" x2="0%" y2="100%">

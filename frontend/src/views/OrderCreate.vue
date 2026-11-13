@@ -55,11 +55,11 @@
         <div
           v-for="(item, idx) in items"
           :key="idx"
-          style="display:flex; gap:1rem; align-items:flex-end; margin-bottom:1.2rem; flex-wrap:wrap; background:#f8fafc; padding:1rem; border-radius:12px; border:1px solid #e2e8f0;"
+          class="order-item-card"
         >
           <!-- Product Dropdown -->
-          <div style="flex:3; min-width:240px;">
-            <label style="font-weight:700; font-size:0.9rem; color:#0c3b4a; margin-bottom:0.3rem; display:block;">کتاب</label>
+          <div class="order-item-product">
+            <label>کتاب</label>
             <select v-model="item.product_id">
               <option :value="null">— انتخاب کتاب —</option>
               <option v-for="p in products" :key="p.id" :value="p.id">
@@ -69,25 +69,24 @@
           </div>
 
           <!-- Quantity -->
-          <div style="flex:1; min-width:100px;">
-            <label style="font-weight:700; font-size:0.9rem; color:#0c3b4a; margin-bottom:0.3rem; display:block;">تعداد</label>
+          <div class="order-item-qty">
+            <label>تعداد</label>
             <input v-model.number="item.quantity" type="number" min="1" />
           </div>
 
           <!-- Subtotal -->
-          <div style="flex:1.5; min-width:140px;">
-            <label style="font-weight:700; font-size:0.9rem; color:#0c3b4a; margin-bottom:0.3rem; display:block;">جمع جزء</label>
-            <div style="padding:0.7rem 0.5rem; font-weight:700; color:#0d9488;">
+          <div class="order-item-subtotal">
+            <label>جمع جزء</label>
+            <div class="subtotal-display">
               {{ formatToman(calcSubtotal(idx)) }}
             </div>
           </div>
 
           <!-- Remove Item Button -->
-          <div style="align-self:flex-end;">
+          <div class="order-item-remove" v-if="items.length > 1">
             <button
               class="btn-action-delete"
               @click="removeItem(idx)"
-              v-if="items.length > 1"
               title="حذف سطر"
             >
               <i class="fas fa-times"></i>
@@ -100,15 +99,15 @@
           <span>افزودن کتاب دیگر</span>
         </button>
 
-        <div style="border-top:2px solid #e2e8f0; margin-top:1.5rem; padding-top:1rem; display:flex; justify-content:space-between; align-items:center;">
-          <span style="font-weight:700; font-size:1.1rem; color:#0c3b4a;">مبلغ کل فاکتور:</span>
-          <span style="font-weight:800; font-size:1.4rem; color:#0d9488;">{{ formatToman(total) }}</span>
+        <div class="order-total-summary">
+          <span>مبلغ کل فاکتور:</span>
+          <span class="total-price-value">{{ formatToman(total) }}</span>
         </div>
       </div>
     </div>
 
     <!-- Actions -->
-    <div style="display:flex; gap:0.75rem; margin-top:1rem;">
+    <div class="order-actions-row">
       <button class="btn-orbit-primary" @click="doCreate" :disabled="saving">
         <i class="fas fa-check"></i>
         <span>{{ saving ? 'در حال ثبت سفارش...' : 'تایید و ثبت نهایی سفارش' }}</span>

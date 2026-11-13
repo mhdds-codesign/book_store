@@ -28,7 +28,7 @@
           </div>
         </div>
         <div class="orbit-card-body">
-          <div style="display:grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 1.5rem;">
+          <div class="order-detail-meta-grid">
             <div>
               <span style="display:block; color:#64748b; font-size:0.9rem; margin-bottom:0.25rem;">نام خریدار:</span>
               <strong style="font-size:1.05rem; color:#0c3b4a;">{{ order.customer_name }}</strong>
@@ -43,11 +43,11 @@
             </div>
             <div>
               <span style="display:block; color:#64748b; font-size:0.9rem; margin-bottom:0.4rem;">وضعیت فعلی:</span>
-              <div style="display:flex; align-items:center; gap:0.5rem; flex-wrap:wrap;">
+              <div class="status-updater-row">
                 <span :class="['status-pill', getStatusClass(order.status)]">
                   {{ translateStatus(order.status) }}
                 </span>
-                <select v-model="newStatus" style="width:auto; padding:0.3rem 0.6rem; border-radius:8px; border:1px solid #cbd5e1; font-family:inherit; font-size:0.85rem;">
+                <select v-model="newStatus" style="width:auto; padding:0.35rem 0.6rem; border-radius:8px; border:1px solid #cbd5e1; font-family:inherit; font-size:0.85rem;">
                   <option value="completed">تکمیل شده</option>
                   <option value="pending">در انتظار</option>
                   <option value="cancelled">لغو شده</option>

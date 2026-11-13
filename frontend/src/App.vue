@@ -1,56 +1,95 @@
 <template>
   <div id="app-shell" :class="{ 'no-sidebar': !loggedIn }">
-    <!-- Sidebar (Only shown when logged in) -->
-    <aside class="app-sidebar" v-if="loggedIn">
+    <!-- Mobile Navigation Bar (Visible on mobile/tablet) -->
+    <header class="mobile-navbar" v-if="loggedIn">
+      <button class="mobile-menu-toggle" @click="sidebarOpen = !sidebarOpen" aria-label="باز کردن منو">
+        <i class="fas fa-bars"></i>
+      </button>
+
+      <router-link to="/" class="mobile-brand">
+        <div class="mobile-brand-icon">
+          <i class="fas fa-book-open"></i>
+        </div>
+        <div class="mobile-brand-text">
+          <span class="mobile-brand-title">OrbitBook</span>
+          <span class="mobile-brand-subtitle">Shop Manager</span>
+        </div>
+      </router-link>
+
+      <button class="mobile-settings-btn" @click="showSettings = true" aria-label="تنظیمات">
+        <i class="fas fa-sliders"></i>
+      </button>
+    </header>
+
+    <!-- Mobile Drawer Backdrop Overlay -->
+    <div
+      class="sidebar-backdrop"
+      v-if="loggedIn && sidebarOpen"
+      @click="sidebarOpen = false"
+    ></div>
+
+    <!-- Sidebar Navigation -->
+    <aside
+      class="app-sidebar"
+      :class="{ 'sidebar-open': sidebarOpen }"
+      v-if="loggedIn"
+    >
       <div>
-        <router-link to="/" class="sidebar-brand">
-          <div class="sidebar-brand-icon">
-            <i class="fas fa-book-open"></i>
-          </div>
-          <div class="sidebar-brand-title">OrbitBook</div>
-          <div class="sidebar-brand-subtitle">Shop Manager</div>
-        </router-link>
+        <div class="sidebar-header-row">
+          <router-link to="/" class="sidebar-brand" @click="sidebarOpen = false">
+            <div class="sidebar-brand-icon">
+              <i class="fas fa-book-open"></i>
+            </div>
+            <div class="sidebar-brand-title">OrbitBook</div>
+            <div class="sidebar-brand-subtitle">Shop Manager</div>
+          </router-link>
+
+          <!-- Mobile Close Button -->
+          <button class="sidebar-mobile-close" @click="sidebarOpen = false" aria-label="بستن منو">
+            <i class="fas fa-times"></i>
+          </button>
+        </div>
 
         <ul class="sidebar-menu">
           <li class="sidebar-menu-item">
-            <router-link to="/">
+            <router-link to="/" @click="sidebarOpen = false">
               <i class="fas fa-house"></i>
               <span>داشبورد</span>
             </router-link>
           </li>
           <li class="sidebar-menu-item">
-            <router-link to="/products">
+            <router-link to="/products" @click="sidebarOpen = false">
               <i class="fas fa-box"></i>
               <span>محصولات</span>
             </router-link>
           </li>
           <li class="sidebar-menu-item">
-            <router-link to="/categories">
+            <router-link to="/categories" @click="sidebarOpen = false">
               <i class="fas fa-shapes"></i>
               <span>دسته‌بندی‌ها</span>
             </router-link>
           </li>
           <li class="sidebar-menu-item">
-            <router-link to="/customers">
+            <router-link to="/customers" @click="sidebarOpen = false">
               <i class="fas fa-users"></i>
               <span>مشتریان</span>
             </router-link>
           </li>
           <li class="sidebar-menu-item">
-            <router-link to="/orders">
+            <router-link to="/orders" @click="sidebarOpen = false">
               <i class="fas fa-cart-shopping"></i>
               <span>سفارش‌ها</span>
             </router-link>
           </li>
           <!-- Note: Income/Revenue (درآمد) excluded per user explicit request -->
           <li class="sidebar-menu-item">
-            <button type="button" @click="showSettings = true">
+            <button type="button" @click="showSettings = true; sidebarOpen = false">
               <i class="fas fa-sliders"></i>
               <span>تنظیمات</span>
             </button>
           </li>
           <li class="sidebar-menu-item">
-            <button type="button" @click="doLogout" style="color: #fda4af;">
+            <button type="button" @click="doLogout(); sidebarOpen = false" style="color: #fda4af;">
               <i class="fas fa-power-off"></i>
               <span>خروج از حساب</span>
             </button>
@@ -58,7 +97,10 @@
         </ul>
       </div>
 
-
+      <!-- Bottom Book Stack Artwork from Design -->
+      <div class="sidebar-footer">
+        <img src="/assets/books_sidebar.png" alt="OrbitBook 3D Books" class="sidebar-books-img" />
+      </div>
     </aside>
 
     <!-- Main Content Area -->
@@ -106,7 +148,8 @@ export default {
   data() {
     return {
       loggedIn: false,
-      showSettings: false
+      showSettings: false,
+      sidebarOpen: false
     }
   },
   async created() {
@@ -114,6 +157,7 @@ export default {
   },
   watch: {
     $route() {
+      this.sidebarOpen = false
       this.checkAuth()
     }
   },
