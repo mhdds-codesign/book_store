@@ -4,7 +4,7 @@ import hashlib
 from fastapi import FastAPI, Depends, HTTPException
 from fastapi.openapi.docs import get_swagger_ui_html
 from fastapi.security import HTTPBasic, HTTPBasicCredentials
-from fastapi.responses import RedirectResponse
+from fastapi.responses import RedirectResponse, FileResponse
 from fastapi.staticfiles import StaticFiles
 from starlette.middleware.sessions import SessionMiddleware
 from fastapi.middleware.cors import CORSMiddleware
@@ -33,20 +33,45 @@ def on_startup():
     except Exception as e:
         print(f"Startup auto-seed check: {e}")
 
+
 app.add_middleware(SessionMiddleware, secret_key="change-this-secret-key-in-production")
 
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["http://localhost:6781", "http://127.0.0.1:6781"],
+    allow_origins=[
+        "http://localhost:6781",
+        "http://127.0.0.1:6781",
+        "http://localhost:8000",
+        "http://127.0.0.1:8000",
+    ],
+    allow_origin_regex=r"https?://.*",
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
 )
 
+# Detect frontend dist directory
+possible_dist_dirs = [
+    os.path.abspath(os.path.join(BASE_BACKEND_DIR, "..", "frontend", "dist")),
+    os.path.abspath(os.path.join(BASE_BACKEND_DIR, "frontend", "dist")),
+    os.path.abspath(os.path.join(BASE_BACKEND_DIR, "..", "dist")),
+    os.path.abspath("frontend/dist"),
+    os.path.abspath("dist"),
+]
+FRONTEND_DIST_DIR = next((d for d in possible_dist_dirs if os.path.isdir(d)), None)
+
+# Mount backend static files if present
 STATIC_DIR = os.path.join(os.path.dirname(os.path.abspath(__file__)), "static")
 if os.path.exists(STATIC_DIR):
     app.mount("/static", StaticFiles(directory=STATIC_DIR), name="static")
 
+# Mount frontend compiled static assets if present
+if FRONTEND_DIST_DIR:
+    assets_dir = os.path.join(FRONTEND_DIST_DIR, "assets")
+    if os.path.isdir(assets_dir):
+        app.mount("/assets", StaticFiles(directory=assets_dir), name="frontend-assets")
+
+# Include backend API routers
 app.include_router(auth_api.router)
 app.include_router(dashboard_api.router)
 app.include_router(products_api.router)
@@ -107,6 +132,32 @@ async def custom_openapi(
     return app.openapi()
 
 
-@app.get("/")
+@app.get("/", include_in_schema=False)
 async def root():
+    if FRONTEND_DIST_DIR:
+        index_file = os.path.join(FRONTEND_DIST_DIR, "index.html")
+        if os.path.isfile(index_file):
+            return FileResponse(index_file)
     return RedirectResponse("/docs")
+
+
+@app.get("/{full_path:path}", include_in_schema=False)
+async def serve_spa_fallback(full_path: str):
+    # Do not intercept API or docs routes
+    if full_path.startswith("api") or full_path == "api":
+        raise HTTPException(status_code=404, detail="API route not found")
+    if full_path.startswith("docs") or full_path.startswith("openapi.json"):
+        raise HTTPException(status_code=404, detail="Not found")
+
+    if FRONTEND_DIST_DIR:
+        # Check if the requested path matches an actual file in dist
+        requested_file = os.path.join(FRONTEND_DIST_DIR, full_path)
+        if full_path and os.path.isfile(requested_file):
+            return FileResponse(requested_file)
+
+        # Fallback to SPA index.html for client-side routing (Vue Router)
+        index_file = os.path.join(FRONTEND_DIST_DIR, "index.html")
+        if os.path.isfile(index_file):
+            return FileResponse(index_file)
+
+    raise HTTPException(status_code=404, detail="Page not found")
