@@ -1,0 +1,33 @@
+# Virtual environments
+.venv/
+venv/
+env/
+ENV/
+
+# Python cache
+__pycache__/
+*.py[cod]
+*$py.class
+*.egg-info/
+
+# Frontend dependencies and local builds
+node_modules/
+frontend/node_modules/
+frontend/dist/
+dist/
+.vite/
+.cache/
+
+# Git and IDE configuration
+.git/
+.github/
+.vscode/
+.idea/
+
+# Operating system and logs
+.DS_Store
+Thumbs.db
+*.log
+npm-debug.log*
+yarn-debug.log*
+pnpm-debug.log*
